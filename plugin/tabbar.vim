@@ -1,4 +1,5 @@
-"=============================================================================
+"vim:foldmethod=marker vim:foldmarker=~~,%%
+
 "    Copyright: Copyright (C) 2005 Marius Groleo 
 "               Permission is hereby granted to use and distribute this code,
 "               with or without modifications, provided that this copyright
@@ -7,98 +8,126 @@
 "               warranty of any kind, either expressed or implied. In no
 "               event will the copyright holder be liable for any damamges
 "               resulting from the use of this software.
-"
-" Name Of File: tabbar.vim
-"  Description: TabBar buffer explorer Vim Plugin
-"   Maintainer: Marius Groleo <groleo@gmail.com>
-"               Derived from  Bindu Well tabbar.vim version 6.3.2
+"               Derived from  Bindu Well miniBufExplorer.vim version 6.3.2
 
 
-" Startup Check
-" already been loaded? ~~
+"  Name Of File :  tabbar.vim
+"  Description  :  TabBar buffer explorer Vim Plugin
+"  Maintainer   :  Marius Groleo < groleo@gmail.com >
+"  Version      :  0.2
+
+
+" press zR in normal mode to open  all folds
+" press zM in normal mode to close all folds
+
+" Already been loaded? ~~
 if exists('Tb_loaded')
     finish
-endif
-" %%
+else
+      let Tb_loaded= 1
+endif "%%
 
-let Tb_loaded= 1
-let g:Tb_DoDebug = 1
-let g:Tb_DebugMode = 0
 
 " Mappings and Commands
-"
-" Tb_ Keyboard Mappings ~~
-" If we don't already have keyboard mappings for Tb_ then create them
-if !hasmapto('1')
-    noremap <unique> <script> 1 :call <SID>Tb_SwitchTo( 1)<CR>:<BS>
-    noremap <unique> <script> 2 :call <SID>Tb_SwitchTo( 2)<CR>:<BS>
-    noremap <unique> <script> 3 :call <SID>Tb_SwitchTo( 3)<CR>:<BS>
-    noremap <unique> <script> 4 :call <SID>Tb_SwitchTo( 4)<CR>:<BS>
-    noremap <unique> <script> 5 :call <SID>Tb_SwitchTo( 5)<CR>:<BS>
-    noremap <unique> <script> 6 :call <SID>Tb_SwitchTo( 6)<CR>:<BS>
-    noremap <unique> <script> 7 :call <SID>Tb_SwitchTo( 7)<CR>:<BS>
-    noremap <unique> <script> 8 :call <SID>Tb_SwitchTo( 8)<CR>:<BS>
-    noremap <unique> <script> 9 :call <SID>Tb_SwitchTo( 9)<CR>:<BS>
-    noremap <unique> <script> 0 :call <SID>Tb_SwitchTo( 10)<CR>:<BS>
+" TabBar Keyboard Mappings ~~
+if ! hasmapto('1') || !hasmapto('<M-1>')
+      "gui bindings containing META key, are different from terminal bindings
+      if has('gui_running')
+            "NORMAL mode bindings for gvim
+            noremap <unique> <script> <M-1> :call <SID>Tb_SwitchTo( 1)<CR>:<BS>
+            noremap <unique> <script> <M-2> :call <SID>Tb_SwitchTo( 2)<CR>:<BS>
+            noremap <unique> <script> <M-3> :call <SID>Tb_SwitchTo( 3)<CR>:<BS>
+            noremap <unique> <script> <M-4> :call <SID>Tb_SwitchTo( 4)<CR>:<BS>
+            noremap <unique> <script> <M-5> :call <SID>Tb_SwitchTo( 5)<CR>:<BS>
+            noremap <unique> <script> <M-6> :call <SID>Tb_SwitchTo( 6)<CR>:<BS>
+            noremap <unique> <script> <M-7> :call <SID>Tb_SwitchTo( 7)<CR>:<BS>
+            noremap <unique> <script> <M-8> :call <SID>Tb_SwitchTo( 8)<CR>:<BS>
+            noremap <unique> <script> <M-9> :call <SID>Tb_SwitchTo( 9)<CR>:<BS>
+            noremap <unique> <script> <M-0> :call <SID>Tb_SwitchTo( 10)<CR>:<BS>
+            "INSERT mode bindings for gvim
+            inoremap <unique> <script> <M-1> <esc>:call <SID>Tb_SwitchTo( 1)<CR>:<BS>i
+            inoremap <unique> <script> <M-2> <esc>:call <SID>Tb_SwitchTo( 2)<CR>:<BS>i
+            inoremap <unique> <script> <M-3> <esc>:call <SID>Tb_SwitchTo( 3)<CR>:<BS>i
+            inoremap <unique> <script> <M-4> <esc>:call <SID>Tb_SwitchTo( 4)<CR>:<BS>i
+            inoremap <unique> <script> <M-5> <esc>:call <SID>Tb_SwitchTo( 5)<CR>:<BS>i
+            inoremap <unique> <script> <M-6> <esc>:call <SID>Tb_SwitchTo( 6)<CR>:<BS>i
+            inoremap <unique> <script> <M-7> <esc>:call <SID>Tb_SwitchTo( 7)<CR>:<BS>i
+            inoremap <unique> <script> <M-8> <esc>:call <SID>Tb_SwitchTo( 8)<CR>:<BS>i
+            inoremap <unique> <script> <M-9> <esc>:call <SID>Tb_SwitchTo( 9)<CR>:<BS>i
+            inoremap <unique> <script> <M-0> <esc>:call <SID>Tb_SwitchTo( 10)<CR>:<BS>i
+      else
+            "NORMAL mode bindings for vim( terminal)
+            noremap <unique> <script> 1 :call <SID>Tb_SwitchTo( 1)<CR>:<BS>
+            noremap <unique> <script> 2 :call <SID>Tb_SwitchTo( 2)<CR>:<BS>
+            noremap <unique> <script> 3 :call <SID>Tb_SwitchTo( 3)<CR>:<BS>
+            noremap <unique> <script> 4 :call <SID>Tb_SwitchTo( 4)<CR>:<BS>
+            noremap <unique> <script> 5 :call <SID>Tb_SwitchTo( 5)<CR>:<BS>
+            noremap <unique> <script> 6 :call <SID>Tb_SwitchTo( 6)<CR>:<BS>
+            noremap <unique> <script> 7 :call <SID>Tb_SwitchTo( 7)<CR>:<BS>
+            noremap <unique> <script> 8 :call <SID>Tb_SwitchTo( 8)<CR>:<BS>
+            noremap <unique> <script> 9 :call <SID>Tb_SwitchTo( 9)<CR>:<BS>
+            noremap <unique> <script> 0 :call <SID>Tb_SwitchTo( 10)<CR>:<BS>
+            "INSERT mode bindings for vim( terminal)
+            inoremap <unique> <script> 1 <esc>:call <SID>Tb_SwitchTo( 1)<CR>:<BS>i
+            inoremap <unique> <script> 2 <esc>:call <SID>Tb_SwitchTo( 2)<CR>:<BS>i
+            inoremap <unique> <script> 3 <esc>:call <SID>Tb_SwitchTo( 3)<CR>:<BS>i
+            inoremap <unique> <script> 4 <esc>:call <SID>Tb_SwitchTo( 4)<CR>:<BS>i
+            inoremap <unique> <script> 5 <esc>:call <SID>Tb_SwitchTo( 5)<CR>:<BS>i
+            inoremap <unique> <script> 6 <esc>:call <SID>Tb_SwitchTo( 6)<CR>:<BS>i
+            inoremap <unique> <script> 7 <esc>:call <SID>Tb_SwitchTo( 7)<CR>:<BS>i
+            inoremap <unique> <script> 8 <esc>:call <SID>Tb_SwitchTo( 8)<CR>:<BS>i
+            inoremap <unique> <script> 9 <esc>:call <SID>Tb_SwitchTo( 9)<CR>:<BS>i
+            inoremap <unique> <script> 0 <esc>:call <SID>Tb_SwitchTo( 10)<CR>:<BS>i
+      endif
+endif" %%
 
-    noremap <unique> <script> <M-1> :call <SID>Tb_SwitchTo( 1)<CR>:<BS>
-    noremap <unique> <script> <M-2> :call <SID>Tb_SwitchTo( 2)<CR>:<BS>
-    noremap <unique> <script> <M-3> :call <SID>Tb_SwitchTo( 3)<CR>:<BS>
-    noremap <unique> <script> <M-4> :call <SID>Tb_SwitchTo( 4)<CR>:<BS>
-    noremap <unique> <script> <M-5> :call <SID>Tb_SwitchTo( 5)<CR>:<BS>
-    noremap <unique> <script> <M-6> :call <SID>Tb_SwitchTo( 6)<CR>:<BS>
-    noremap <unique> <script> <M-7> :call <SID>Tb_SwitchTo( 7)<CR>:<BS>
-    noremap <unique> <script> <M-8> :call <SID>Tb_SwitchTo( 8)<CR>:<BS>
-    noremap <unique> <script> <M-9> :call <SID>Tb_SwitchTo( 9)<CR>:<BS>
-    noremap <unique> <script> <M-0> :call <SID>Tb_SwitchTo( 10)<CR>:<BS>
-endif
-"
-" %%
 
 " Tb_ <Script> internal map ~~
-" 
 noremap <unique> <script> <Plug>TabBar  :call <SID>StartTabBar(1, -1)<CR>:<BS>
 noremap <unique> <script> <Plug>CTabBar :call <SID>StopTabBar(1)<CR>:<BS>
 noremap <unique> <script> <Plug>UTabBar :call <SID>AutoUpdate(-1)<CR>:<BS>
 noremap <unique> <script> <Plug>TTabBar :call <SID>ToggleTabBar()<CR>:<BS>
-
 " %%
+
+
 " Tb_ commands ~~
-" 
 if !exists(':TabBar')
-  command! TabBar  call <SID>StartTabBar(1, -1)
+      command! TabBar  call <SID>StartTabBar(1, -1)
 endif
+
 if !exists(':CTabBar')
-  command! CTabBar  call <SID>StopTabBar(1)
+      command! CTabBar  call <SID>StopTabBar(1)
 endif
+
 if !exists(':UTabBar')
-  command! UTabBar  call <SID>AutoUpdate(-1)
+      command! UTabBar  call <SID>AutoUpdate(-1)
 endif
+
 if !exists(':TTabBar')
-  command! TTabBar  call <SID>ToggleTabBar()
+      command! TTabBar  call <SID>ToggleTabBar()
 endif
+
 if !exists(':Tb_bn')
-  command! Tbbbn call <SID>CycleBuffer(1)
+      command! Tbbbn call <SID>CycleBuffer(1)
 endif
 if !exists(':Tb_bp')
-  command! Tbbbp call <SID>CycleBuffer(0)
+      command! Tbbbp call <SID>CycleBuffer(0)
 endif " %%
 
-" Global Configuration Variables
-"
-" Debug Level ~~
-"
-" 0 = no logging
-" 1=5 = errors ; 1 is the most important
-" 5-9 = info ; 5 is the most important
-" 10 = Entry/Exit
-if !exists('g:Tb_DebugLevel')
-  let g:Tb_DebugLevel = 0 
-endif
 
-" %%
+
+" Global Configuration Variables
+" Debug Level ~~
+"   0 = no logging
+" 1-5 = errors ; 1 is the most important
+" 5-9 = info ; 5 is the most important
+"  10 = Entry/Exit
+if !exists('g:Tb_DebugLevel')
+      let g:Tb_DebugLevel = 0
+endif" %%
+
+
 " Debug Mode ~~
-"
 " 0 = debug to a window
 " 1 = use vim's echo facility
 " 2 = write to a file named TabBar.DBG
@@ -107,119 +136,98 @@ endif
 " 3 = Write into g:Tb_DebugOutput
 "     global variable [This is the default]
 if !exists('g:Tb_DebugMode')
-  let g:Tb_DebugMode = 3 
-endif 
+      let g:Tb_DebugMode = 3
+endif" %%
 
-" %%
+
 " Allow auto update? ~~
-"
 " We start out with this off for startup, but once vim is running we 
 " turn this on.
 if !exists('g:Tb_AutoUpdate')
-    let g:Tb_AutoUpdate = 0
-endif
+      let g:Tb_AutoUpdate = 0
+endif" %%
 
-" %%
+
 " MoreThanOne? ~~
 " Display Mini Buf Explorer when there are 'More Than One' eligible buffers 
-"
 if !exists('g:Tb_MoreThanOne')
-    let g:Tb_MoreThanOne = 2
-endif 
+      let g:Tb_MoreThanOne = 2
+endif" %%
 
-" %%
+
 " Split below/above/left/right? ~~
 " When opening a new -TabBar- window, split the new windows below or 
 " above the current window?  1 = below, 0 = above.
-"
 if !exists('g:Tb_SplitBelow')
-    let g:Tb_SplitBelow = &splitbelow
-endif 
+      let g:Tb_SplitBelow = &splitbelow
+endif" %%
 
-" %%
 
 " Horizontal or Vertical explorer? ~~
 " For folks that like vertical explorers, I'm caving in and providing for
 " veritcal splits. If this is set to 0 then the current horizontal 
 " splitting logic will be run. If however you want a vertical split,
 " assign the width (in characters) you wish to assign to the Tb_ window.
-"
 if !exists('g:Tb_VSplit')
-    let g:Tb_VSplit = 0
-endif
-" %%
+      let g:Tb_VSplit = 0
+endif" %%
 
 
 " TabWrap? ~~
 " By default line wrap is used (possibly breaking a tab name between two
 " lines.) Turning this option on (setting it to 1) can take more screen
 " space, but will make sure that each tab is on one and only one line.
-"
 if !exists('g:Tb_TabWrap')
     let g:Tb_TabWrap = 0
-endif
+endif" %%
 
-" %%
 
+" Switch buffers using Ctrl-Tab ?~~
 if !exists('g:Tb_cTabSwitchBufs')
     let g:Tb_cTabSwitchBufs = 1
-endif
-" Notice: that if CTabSwitchBufs is turned on then
-" we turn off CTabSwitchWindows.
+endif" %%
+
+
+" if cTabSwitchBufs is turned on then we turn off cTabSwitchWindows.~~
 if g:Tb_cTabSwitchBufs == 1 || !exists('g:Tb_cTabSwitchWindows')
-    let g:Tb_cTabSwitchWindows = 0
-endif 
+      let g:Tb_cTabSwitchWindows = 0
+endif" %%
 
-"
-" If we have enabled control + arrow key remapping
-" then perform the remapping
-"
-"if g:Tb_MapWindowNavArrows
-"    noremap <C-Down>  <C-W>j
-""    noremap <C-Up>    <C-W>k
-"    noremap <C-Left>  <C-W>h
-"    noremap <C-Right> <C-W>l
-"endif
 
-" If we have enabled <C-TAB> and <C-S-TAB> to switch buffers
+" If we have enabled <C-TAB> and <C-S-TAB> to switch buffers~~
 " in the current window then perform the remapping
-"
 if g:Tb_cTabSwitchBufs
     noremap <C-TAB>   :call <SID>CycleBuffer(1)<CR>:<BS>
     noremap <C-S-TAB> :call <SID>CycleBuffer(0)<CR>:<BS>
-endif
+endif "%%
 
-"
-" If we have enabled <C-TAB> and <C-S-TAB> to switch windows
+
+" If we have enabled <C-TAB> and <C-S-TAB> to switch windows ~~
 " then perform the remapping
-"
 if g:Tb_cTabSwitchWindows
     noremap <C-TAB>   <C-W>w
     noremap <C-S-TAB> <C-W>W
-endif
+endif "%%
 
-" %%
+
 " Modifiable Select Target ~~
-"
 if !exists('g:Tb_ModSelTarget')
-    let g:Tb_ModSelTarget = 0
-endif
+      let g:Tb_ModSelTarget = 0
+endif "%%
 
-"%%
+
 " Force Syntax Enable ~~
-"
 if !exists('g:Tb_ForceSyntaxEnable')
-    let g:Tb_ForceSyntaxEnable = 0
-endif
+      let g:Tb_ForceSyntaxEnable = 0
+endif "%%
 
-" %%
+
 " Single/Double Click? ~~
 " flag that can be set to 1 in a users .vimrc to allow 
 " single click switching of tabs. By default we use
 " double click for tab selection.
-"
 if !exists('g:Tb_UseSingleClick')
-    let g:Tb_UseSingleClick = 0
+      let g:Tb_UseSingleClick = 0
 endif
 
 "
@@ -246,52 +254,57 @@ endif " %%
 
 
 " Variables used internally
-"
 " Script/Global variables ~~
 " Global used to store the buffer list so we don't update the
 " UI unless the list has changed.
 if !exists('g:Tb_BufList')
     let g:Tb_BufList = ''
-endif
+endif "%%
 
 
-" Variable used as a mutex so that we don't do lots
+" Variable used as a mutex so that we don't do lots~~
 " of AutoUpdates at the same time.
 if !exists('g:Tb_InAutoUpdate')
     let g:Tb_InAutoUpdate = 0
-endif
+endif "%%
 
+
+"~~
 if !exists('g:Tb_MaxSize')
       let g:Tb_MaxSize = 1
       "TODO implement Tb_MaxHeight
-endif
+endif "%%
 
+
+"~~
 if !exists('g:Tb_MinSize')
       let g:Tb_MinSize = 1
       "TODO implement Tb_MaxHeight
-endif
+endif "%%
 
-" In debug mode 3 this variable will hold the debug output
+
+" In debug mode 3 this variable will hold the debug output~~
 if !exists('g:Tb_DebugOutput')
-    let g:Tb_DebugOutput = ''
-endif
+      let g:Tb_DebugOutput = ''
+endif "%%
 
-" In debug mode 3 this variable will hold the debug output
+
+" In debug mode 3 this variable will hold the debug output~~
 if !exists('g:Tb_ForceDisplay')
-    let g:Tb_ForceDisplay = 0
-endif
+      let g:Tb_ForceDisplay = 0
+endif "%%
+
 
 " Variable used to pass maxTabWidth info between functions
-let s:maxTabWidth = 0 
+let s:maxTabWidth = 0
+
 
 " Variable used to count debug output lines
-let s:debugIndex = 0 
+let s:debugIndex = 0
 
-  
-" %%
+
 " Setup an autocommand group and some autocommands ~~
 " that keep our explorer updated automatically.
-"
 augroup TabBar
 autocmd TabBar BufDelete   * call <SID>DEBUG('-=> BufDelete AutoCmd', 10) |call <SID>AutoUpdate(expand('<abuf>'))
 autocmd TabBar BufEnter    * call <SID>DEBUG('-=> BufEnter  AutoCmd', 10) |call <SID>AutoUpdate(-1)
@@ -300,16 +313,10 @@ autocmd TabBar VimEnter    * call <SID>DEBUG('-=> VimEnter  AutoCmd', 10) |let g
 
 
 
-
-
-
-
 " Functions
-"
 " StartTabBar - Sets up our explorer and causes it to be displayed ~~
-"
 function! <SID>StartTabBar(sticky, delBufNum)
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Entering StartTabBar()'   ,10)
     endif
 
@@ -401,18 +408,15 @@ function! <SID>StartTabBar(sticky, delBufNum)
     let &report  = l:save_rep
     let &showcmd = l:save_sc
 
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Completed StartTabBar()'  ,10)
     endif
-endfunction
-" %%
+endfunction " %%
 
 
-" StopTabBar - Looks for our explorer and closes the window if it is
-" opened ~~
-"
-function! <SID>StopTabBar(sticky)
-    if g:Tb_DoDebug == 1
+" StopTabBar - Looks for our explorer and closes the window if it is opened ~~
+function! <SID>StopTabBar( sticky)
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Entering StopTabBar()'    ,10)
     endif
 
@@ -428,17 +432,15 @@ function! <SID>StopTabBar(sticky)
         wincmd p
     endif
 
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Completed StopTabBar()'   ,10)
     endif
-endfunction
-" %%
+endfunction " %%
 
 
 " ToggleTabBar - Looks for our explorer and opens/closes the window ~~
-"
 function! <SID>ToggleTabBar()
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Entering ToggleTabBar()'  ,10)
     endif
 
@@ -453,17 +455,16 @@ function! <SID>ToggleTabBar()
         wincmd p
     endif
 
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Completed ToggleTabBar()' ,10)
     endif
-endfunction
+endfunction " %%
 
-" %%
+
 " FindWindow - Return the window number of a named buffer ~~
 " If none is found then returns -1. 
-"
 function! <SID>FindWindow(bufName)
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Entering FindWindow()',10)
     endif
 
@@ -471,7 +472,7 @@ function! <SID>FindWindow(bufName)
   " our buffer.
   let l:bufNum = bufnr(a:bufName)
   if l:bufNum != -1
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
       call <SID>DEBUG('Found buffer ('.a:bufName.'): '.l:bufNum,9)
     endif
     let l:winNum = bufwinnr(l:bufNum)
@@ -482,8 +483,9 @@ function! <SID>FindWindow(bufName)
   return l:winNum
 
 endfunction
-
 " %%
+
+
 " FindCreateWindow - Attempts to find a window for a named buffer. ~~
 "
 " If it is found then moves there. Otherwise creates a new window and 
@@ -492,9 +494,8 @@ endfunction
 " forceEdge, -1 use defaults, 0 below, 1 above
 " isExplorer, 0 no, 1 yes 
 " 0 no, 1 yes
-"
 function! <SID>FindCreateWindow(bufName, forceEdge, isExplorer)
-  if g:Tb_DoDebug == 1
+  if g:Tb_DebugLevel > 0
     call <SID>DEBUG('Entering FindCreateWindow('.a:bufName.')',10)
   endif
 
@@ -510,7 +511,7 @@ function! <SID>FindCreateWindow(bufName, forceEdge, isExplorer)
   " If found goto the existing window, otherwise 
   " split open a new window.
   if l:winNum != -1
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
       call <SID>DEBUG('Found window ('.a:bufName.'): '.l:winNum,9)
     endif
     exec l:winNum.' wincmd w'
@@ -557,12 +558,12 @@ function! <SID>FindCreateWindow(bufName, forceEdge, isExplorer)
     " Try to find an existing explorer window
     let l:winNum = <SID>FindWindow(a:bufName)
     if l:winNum != -1
-      if g:Tb_DoDebug == 1
+      if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Created and then found window ('.a:bufName.'): '.l:winNum,9)
       endif
       exec l:winNum.' wincmd w'
     else
-      if g:Tb_DoDebug == 1
+      if g:Tb_DebugLevel > 0
         call <SID>DEBUG('FindCreateWindow failed to create window ('.a:bufName.').',1)
       endif
       return
@@ -582,7 +583,7 @@ function! <SID>FindCreateWindow(bufName, forceEdge, isExplorer)
       endif
     endif
 
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
       call <SID>DEBUG('Window ('.a:bufName.') created: '.winnr(),9)
     endif
 
@@ -591,16 +592,15 @@ function! <SID>FindCreateWindow(bufName, forceEdge, isExplorer)
   " Restore the user's split setting.
   let &splitbelow = l:saveSplitBelow
 
-endfunction
+endfunction " %%
 
-" %%
+
 " DisplayBuffers - Wrapper for getting Tb_ window shown ~~
 "
 " Makes sure we are in our explorer, then erases the current buffer and turns 
 " it into a mini buffer explorer window.
-"
 function! <SID>DisplayBuffers(delBufNum)
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Entering DisplayBuffers()',10)
     endif
   " Make sure we are in our window
@@ -614,23 +614,22 @@ function! <SID>DisplayBuffers(delBufNum)
 
   call <SID>ShowBuffers(a:delBufNum)
   call <SID>ResizeWindow()
-  
+
   normal! zz
-  
+
   " Prevent the buffer from being modified.
   setlocal nomodifiable
   set nobuflisted
 
-endfunction
+endfunction " %%
 
-" %%
+
 " Resize Window - Set width/height of Tb_ window ~~
 " 
 " Makes sure we are in our explorer, then sets the height/width for our explorer 
 " window so that we can fit all of our information without taking extra lines.
-"
 function! <SID>ResizeWindow()
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Entering ResizeWindow()',10)
     endif
 
@@ -651,7 +650,7 @@ function! <SID>ResizeWindow()
       if (l:width == 0)
         let l:height = winheight('.')
       else
-        let l:height = (l:length / l:width) 
+        let l:height = (l:length / l:width)
         " handle truncation from div
         if (l:length % l:width) != 0
           let l:height = l:height + 1
@@ -665,24 +664,24 @@ function! <SID>ResizeWindow()
       let l:height = line('.')
       normal gg
     endif
-  
+
     " enforce max window height
     if g:Tb_MaxSize != 0
       if g:Tb_MaxSize < l:height
         let l:height = g:Tb_MaxSize
       endif
     endif
-  
+
     " enfore min window height
     if l:height < g:Tb_MinSize || l:height == 0
       let l:height = g:Tb_MinSize
     endif
-  
-    if g:Tb_DoDebug == 1
+
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('ResizeWindow to '.l:height.' lines',9)
     endif
     exec('resize '.l:height)
-  
+
   " Vertical Resize
   else 
 
@@ -699,25 +698,23 @@ function! <SID>ResizeWindow()
     endif
 
     if l:width != l:newWidth
-        if g:Tb_DoDebug == 1
+        if g:Tb_DebugLevel > 0
             call <SID>DEBUG('ResizeWindow to '.l:newWidth.' columns',9)
         endif
       exec('vertical resize '.l:newWidth)
     endif
 
   endif
-  
-endfunction
 
-" %%
+endfunction " %%
+
+
 " ShowBuffers - Clear current buffer and put the Tb_ text into it ~~
-" 
 " Makes sure we are in our explorer, then adds a list of all modifiable 
 " buffers to the current buffer. Special marks are added for buffers that 
 " are in one or more windows (*) and buffers that have been modified (+)
-"
 function! <SID>ShowBuffers(delBufNum)
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Entering ShowBuffers()',10)
     endif
 
@@ -743,26 +740,24 @@ function! <SID>ShowBuffers(delBufNum)
     let &report  = l:save_rep
     let &showcmd = l:save_sc
   else
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Buffer list not update since there was no change',9)
     endif
   endif
-  
-endfunction
+endfunction " %%
 
-" %%
+
 " Max - Returns the max of two numbers ~~
-"
 function! <SID>Max(argOne, argTwo)
   if a:argOne > a:argTwo
     return a:argOne
   else
     return a:argTwo
   endif
-endfunction
-" %%
+endfunction " %%
 
 
+" TbSwitchTo      Switch to bufNum( parameter) buffer~~
 function! <SID>Tb_SwitchTo( bufNum)
 
     let l:NBuffers = bufnr('$')     " Get the number of the last buffer.
@@ -801,15 +796,14 @@ function! <SID>Tb_SwitchTo( bufNum)
             endif
         "endif
     endwhile
+endfunction " %%
 
-endfunction
 
 " BuildBufferList - Build the text for the Tb_ window ~~
 " Creates the buffer list string and returns 1 if it is different than
 " last time this was called and 0 otherwise.
-"
 function! <SID>BuildBufferList(delBufNum, updateBufList)
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Entering BuildBufferList()',10)
     endif
 
@@ -885,18 +879,16 @@ if (a:updateBufList)
     return 0
     endif
 
-    endfunction
+endfunction " %%
 
-" %%
+
 " HasEligibleBuffers - Are there enough Tb_ eligible buffers to open the Tb_ window? ~~
-" 
 " Returns 1 if there are any buffers that can be displayed in a 
 " mini buffer explorer. Otherwise returns 0. If delBufNum is
 " any non -1 value then don't include that buffer in the list
 " of eligible buffers.
-"
 function! <SID>HasEligibleBuffers(delBufNum)
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Entering HasEligibleBuffers()',10)
     endif
 
@@ -910,7 +902,7 @@ function! <SID>HasEligibleBuffers(delBufNum)
   let l:found    = 0              " No buffer found
 
   if (g:Tb_MoreThanOne > 1)
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('More Than One mode turned on',6)
     endif
   endif
@@ -946,186 +938,175 @@ function! <SID>HasEligibleBuffers(delBufNum)
   let &report  = l:save_rep
   let &showcmd = l:save_sc
 
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('HasEligibleBuffers found '.l:found.' eligible buffers of '.l:needed.' needed',6)
     endif
 
   return (l:found >= l:needed)
-  
-endfunction
+endfunction " %%
 
-" %%
+
 " Auto Update - Function called by auto commands for auto updating the Tb_ ~~
-"
-" IF auto update is turned on        AND
-"    we are in a real buffer         AND
-"    we have enough eligible buffers THEN
-" Update our explorer and get back to the current window
-"
+"     IF auto update is turned on        AND
+"     we are in a real buffer         AND
+"     we have enough eligible buffers THEN
+"     Update our explorer and get back to the current window
 " If we get a buffer number for a buffer that 
 " is being deleted, we need to make sure and 
 " remove the buffer from the list of eligible 
 " buffers in case we are down to one eligible
 " buffer, in which case we will want to close
 " the Tb_ window.
-"
 function! <SID>AutoUpdate(delBufNum)
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Entering AutoUpdate('.a:delBufNum.') : '.bufnr('%').' : '.bufname('%'),10)
     endif
 
-  if (g:Tb_InAutoUpdate == 1)
-    if g:Tb_DoDebug == 1
-        call <SID>DEBUG('AutoUpdate recursion stopped',9)
-        call <SID>DEBUG('Terminated AutoUpdate()'    ,10)
-    endif
-    return
-  else
-    let g:Tb_InAutoUpdate = 1
-  endif
+      if (g:Tb_InAutoUpdate == 1)
+            if g:Tb_DebugLevel > 0
+                  call <SID>DEBUG('AutoUpdate recursion stopped',9)
+                  call <SID>DEBUG('Terminated AutoUpdate()'    ,10)
+            endif
+            return
+      else
+            let g:Tb_InAutoUpdate = 1
+      endif
 
-  " Don't bother autoupdating the Tb_ window
-  if (bufname('%') == '-TabBar-')
+" Don't update the TabBar window
+if (bufname('%') == '-TabBar-')
     " If this is the only buffer left then toggle the buffer
-    if (winbufnr(2) == -1)
-        call <SID>CycleBuffer(1)
-        if g:Tb_DoDebug == 1
-            call <SID>DEBUG('AutoUpdate does not run for cycled windows', 9)
-        endif
-    else
-        if g:Tb_DoDebug == 1
-            call <SID>DEBUG('AutoUpdate does not run for the Tb_ window', 9)
-        endif
-    endif
+      if (winbufnr(2) == -1)
+            call <SID>CycleBuffer(1)
+            if g:Tb_DebugLevel > 0
+                  call <SID>DEBUG('AutoUpdate does not run for cycled windows', 9)
+            endif
+      else
+            if g:Tb_DebugLevel > 0
+                  call <SID>DEBUG('AutoUpdate does not run for the Tb_ window', 9)
+            endif
+      endif
 
-    if g:Tb_DoDebug == 1
-        call <SID>DEBUG('Terminated AutoUpdate()'    ,10)
-    endif
+      if g:Tb_DebugLevel > 0
+            call <SID>DEBUG('Terminated AutoUpdate()'    ,10)
+      endif
 
-    let g:Tb_InAutoUpdate = 0
-    return
+      let g:Tb_InAutoUpdate = 0
+      return
+endif
 
-  endif
+if (a:delBufNum != -1)
+      if g:Tb_DebugLevel > 0
+            call <SID>DEBUG('AutoUpdate will make sure that buffer '.a:delBufNum.' is not included in the buffer list.', 5)
+      endif
+endif
 
-  if (a:delBufNum != -1)
-    if g:Tb_DoDebug == 1
-        call <SID>DEBUG('AutoUpdate will make sure that buffer '.a:delBufNum.' is not included in the buffer list.', 5)
-    endif
-  endif
-  
   " Only allow updates when the AutoUpdate flag is set
   " this allows us to stop updates on startup.
-  if g:Tb_AutoUpdate == 1
-    " Only show TabBar if we have a real buffer
-    if ((g:Tb_MoreThanOne == 0) || (bufnr('%') != -1 && bufname('%') != ""))
-      if <SID>HasEligibleBuffers(a:delBufNum) == 1
-        " if we don't have a window then create one
-        let l:bufnr = <SID>FindWindow('-TabBar-')
-        if (l:bufnr == -1)
-            if g:Tb_DoDebug == 1
-                call <SID>DEBUG('About to call StartTabBar (Create Tb_)', 9)
-            endif
-          call <SID>StartTabBar(0, a:delBufNum)
-        else
-        " otherwise only update the window if the contents have
-        " changed
-          let l:ListChanged = <SID>BuildBufferList(a:delBufNum, 0)
-          if (l:ListChanged)
-            if g:Tb_DoDebug == 1
-                call <SID>DEBUG('About to call StartTabBar (Update Tb_)', 9) 
-            endif
-            call <SID>StartTabBar(0, a:delBufNum)
-          endif
-        endif
+if g:Tb_AutoUpdate == 1
+      " Only show TabBar if we have a real buffer
+      if ((g:Tb_MoreThanOne == 0) || (bufnr('%') != -1 && bufname('%') != ""))
+            if <SID>HasEligibleBuffers(a:delBufNum) == 1
+            " if we don't have a window then create one
+                  let l:bufnr = <SID>FindWindow('-TabBar-')
+                  if (l:bufnr == -1)
+                        if g:Tb_DebugLevel > 0
+                              call <SID>DEBUG('About to call StartTabBar (Create Tb_)', 9)
+                        endif
+                        call <SID>StartTabBar(0, a:delBufNum)
+                  else
+                  " otherwise only update the window if the contents have changed
+                        let l:ListChanged = <SID>BuildBufferList(a:delBufNum, 0)
+                        if (l:ListChanged)
+                              if g:Tb_DebugLevel > 0
+                                    call <SID>DEBUG('About to call StartTabBar (Update Tb_)', 9) 
+                              endif
+                              call <SID>StartTabBar(0, a:delBufNum)
+                        endif
+                  endif
 
-        " go back to the working buffer
-        if (bufname('%') == '-TabBar-')
-          wincmd p
-        endif
-      else
-        if g:Tb_DoDebug == 1
-            call <SID>DEBUG('Failed in eligible check', 9)
-        endif
-        call <SID>StopTabBar(0)
-      endif
+                  " go back to the working buffer
+                  if (bufname('%') == '-TabBar-')
+                        wincmd p
+                  endif
+            else
+                  if g:Tb_DebugLevel > 0
+                        call <SID>DEBUG('Failed in eligible check', 9)
+                  endif
+                  call <SID>StopTabBar(0)
+            endif
 
 	  " VIM sometimes turns syntax highlighting off,
 	  " we can force it on, but this may cause weird
 	  " behavior so this is an optional hack to force
 	  " syntax back on when we enter a buffer
-	  if g:Tb_ForceSyntaxEnable
-        if g:Tb_DoDebug == 1
-		    call <SID>DEBUG('Enable Syntax', 9)
-        endif
-		exec 'syntax enable'
-	  endif
+	      if g:Tb_ForceSyntaxEnable
+                  if g:Tb_DebugLevel > 0
+                        call <SID>DEBUG('Enable Syntax', 9)
+                  endif
+		      exec 'syntax enable'
+	      endif
 
     else
-        if g:Tb_DoDebug == 1
-            call <SID>DEBUG('No buffers loaded...',9)
-        endif
+            if g:Tb_DebugLevel > 0
+                  call <SID>DEBUG('No buffers loaded...',9)
+            endif
     endif
-  else
-        if g:Tb_DoDebug == 1
-            call <SID>DEBUG('AutoUpdates are turned off, terminating',9)
-        endif
-  endif
-
-    if g:Tb_DoDebug == 1
-        call <SID>DEBUG('Completed AutoUpdate()'     ,10)
+else
+    if g:Tb_DebugLevel > 0
+          call <SID>DEBUG('AutoUpdates are turned off, terminating',9)
     endif
+endif
 
-    let g:Tb_InAutoUpdate = 0
 
-endfunction
+if g:Tb_DebugLevel > 0
+      call <SID>DEBUG('Completed AutoUpdate()'     ,10)
+endif
 
-" %%
+let g:Tb_InAutoUpdate = 0
+endfunction " %%
+
+
 " GetSelectedBuffer - From the Tb_ window, return the bufnum for buf under cursor ~~
-" 
 " If we are in our explorer window then return the buffer number
 " for the buffer under the cursor.
-"
 function! <SID>GetSelectedBuffer()
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Entering GetSelectedBuffer()',10)
     endif
 
   " Make sure we are in our window
-  if bufname('%') != '-TabBar-'
-    if g:Tb_DoDebug == 1
-        call <SID>DEBUG('GetSelectedBuffer called in invalid window',1)
-    endif
-    return -1
-  endif
+      if bufname('%') != '-TabBar-'
+            if g:Tb_DebugLevel > 0
+                  call <SID>DEBUG('GetSelectedBuffer called in invalid window',1)
+            endif
+            return -1
+      endif
 
-  let l:save_reg = @"
-  let @" = ""
-  normal ""yi[
-  if @" != ""
-    let l:retv = substitute(@",'\([0-9]*\):.*', '\1', '') + 0
-    let @" = l:save_reg
-    return l:retv
-  else
-    let @" = l:save_reg
-    return -1
-  endif
+      let l:save_reg = @"
+      let @" = ""
+      normal ""yi[
+      if @" != ""
+            let l:retv = substitute(@",'\([0-9]*\):.*', '\1', '') + 0
+            let @" = l:save_reg
+            return l:retv
+      else
+            let @" = l:save_reg
+            return -1
+      endif
+endfunction " %%
 
-endfunction
 
-" %%
 " Tb_SelectBuffer - From the Tb_ window, open buffer under the cursor ~~
-" 
 " If we are in our explorer, then we attempt to open the buffer under the
 " cursor in the previous window.
-"
 function! <SID>Tb_SelectBuffer()
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Entering Tb_SelectBuffer()' ,10)
     endif
 
   " Make sure we are in our window
   if bufname('%') != '-TabBar-'
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Tb_SelectBuffer called in invalid window',1)
     endif
     return
@@ -1177,28 +1158,25 @@ function! <SID>Tb_SelectBuffer()
   let &report  = l:save_rep
   let &showcmd = l:save_sc
 
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Completed Tb_SelectBuffer()',10)
     endif
+endfunction " %%
 
-endfunction
 
-" %%
 " Tb_DeleteBuffer - From the Tb_ window, delete selected buffer from list ~~
-" 
 " After making sure that we are in our explorer, This will delete the buffer 
 " under the cursor. If the buffer under the cursor is being displayed in a
 " window, this routine will attempt to get different buffers into the 
 " windows that will be affected so that windows don't get removed.
-"
 function! <SID>Tb_DeleteBuffer()
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Entering Tb_DeleteBuffer()' ,10)
     endif
 
   " Make sure we are in our window
   if bufname('%') != '-TabBar-'
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Tb_DeleteBuffer called in invalid window',1)
     endif
     return 
@@ -1210,7 +1188,7 @@ function! <SID>Tb_DeleteBuffer()
   let l:selBufName = bufname(l:selBuf)
 
   if l:selBufName == 'TabBar.DBG' && g:Tb_DebugLevel > 0
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Tb_DeleteBuffer will not delete the debug window, when debugging is turned on.',1)
     endif
     return
@@ -1235,7 +1213,7 @@ function! <SID>Tb_DeleteBuffer()
     let l:prevWin    = winnr()
     let l:prevWinBuf = winbufnr(winnr())
 
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Previous window: '.l:prevWin.' buffer in window: '.l:prevWinBuf,5)
         call <SID>DEBUG('Selected buffer is <'.l:selBufName.'>['.l:selBuf.']',5)
     endif
@@ -1246,14 +1224,14 @@ function! <SID>Tb_DeleteBuffer()
     let l:winNum = (bufwinnr(l:selBufName) + 0)
     " while we have windows that contain our buffer
     while l:winNum != -1 
-        if g:Tb_DoDebug == 1
+        if g:Tb_DebugLevel > 0
             call <SID>DEBUG('Buffer '.l:selBuf.' is being displayed in window: '.l:winNum,5)
         endif
 
         " move to window that contains our selected buffer
         exec l:winNum.' wincmd w'
 
-        if g:Tb_DoDebug == 1
+        if g:Tb_DebugLevel > 0
             call <SID>DEBUG('We are now in window: '.winnr().' which contains buffer: '.bufnr('%').' and should contain buffer: '.l:selBuf,5)
         endif
 
@@ -1261,7 +1239,7 @@ function! <SID>Tb_DeleteBuffer()
         call <SID>CycleBuffer(1)
         let l:curBuf  = bufnr('%')
 
-        if g:Tb_DoDebug == 1
+        if g:Tb_DebugLevel > 0
             call <SID>DEBUG('Window now contains buffer: '.bufnr('%').' which should not be: '.l:selBuf,5)
         endif
 
@@ -1276,7 +1254,7 @@ function! <SID>Tb_DeleteBuffer()
     endwhile
 
     " Attempt to restore previous window
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Restoring previous window to: '.l:prevWin,5)
     endif
     exec l:prevWin.' wincmd w'
@@ -1285,17 +1263,17 @@ function! <SID>Tb_DeleteBuffer()
     let l:winNum = bufwinnr(bufnr('-TabBar-'))
     if l:winNum != -1
         exec l:winNum.' wincmd w'
-        if g:Tb_DoDebug == 1
+        if g:Tb_DebugLevel > 0
             call <SID>DEBUG('Got to -TabBar- window: '.winnr(),5)
         endif
     else
-        if g:Tb_DoDebug == 1
+        if g:Tb_DebugLevel > 0
             call <SID>DEBUG('Unable to get to -TabBar- window',1)
         endif
     endif
   
     " Delete the buffer selected.
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('About to delete buffer: '.l:selBuf,5)
     endif
     exec('silent! bd '.l:selBuf)
@@ -1309,42 +1287,38 @@ function! <SID>Tb_DeleteBuffer()
   let &report  = l:save_rep
   let &showcmd = l:save_sc
 
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Completed Tb_DeleteBuffer()',10)
     endif
 
-endfunction
+endfunction " %%
 
-" %%
+
 " Tb_Click - Handle mouse double click ~~
-"
 function! s:Tb_Click()
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Entering Tb_Click()',10)
     endif
   call <SID>Tb_SelectBuffer()
-endfunction
+endfunction " %%
 
-"
-" Tb_DoubleClick - Double click with the mouse.
-"
+
+" Tb_DoubleClick - Double click with the mouse.~~
 function! s:Tb_DoubleClick()
-    if g:Tb_DoDebug == 1
+    if g:Tb_DebugLevel > 0
         call <SID>DEBUG('Entering Tb_DoubleClick()',10)
     endif
   call <SID>Tb_SelectBuffer()
-endfunction
+endfunction " %%
 
-" %%
+
 " CycleBuffer - Cycle Through Buffers ~~
-"
 " Move to next or previous buffer in the current window. If there 
 " are no more modifiable buffers then stay on the current buffer.
 " can be called with no parameters in which case the buffers are
 " cycled forward. Otherwise a single argument is accepted, if 
 " it's 0 then the buffers are cycled backwards, otherwise they
 " are cycled forward.
-"
 function! <SID>CycleBuffer(forward)
 
   " The following hack handles the case where we only have one
@@ -1379,16 +1353,13 @@ function! <SID>CycleBuffer(forward)
   if (l:saveAutoUpdate == 1)
     call <SID>AutoUpdate(-1)
   endif
+endfunction " %%
 
-endfunction
 
-" %%
 " DEBUG - Display debug output when debugging is turned on ~~
-"
 " Thanks to Charles E. Campbell, Jr. PhD <cec@NgrOyphSon.gPsfAc.nMasa.gov> 
 " for Decho.vim which was the inspiration for this enhanced debugging 
 " capability.
-"
 function! <SID>DEBUG(msg, level)
 
     if g:Tb_DebugLevel >= a:level
@@ -1452,10 +1423,10 @@ function! <SID>DEBUG(msg, level)
         let &showcmd = l:save_sc
 
     endif
+endfunc " %%
 
-endfunc
-" vim:ft=vim:fdm=marker:ff=unix:nowrap:tabstop=4:shiftwidth=4:softtabstop=4:smarttab:shiftround:expandtab
 
+"     Documentation~~
 "     :MiniBufExplorer        " Open and/or goto Explorer
 "     :CMiniBufExplorer       " Close the Explorer if it's open
 "     :UMiniBufExplorer       " Update Explorer without navigating
@@ -1620,3 +1591,4 @@ endfunc
 "     Or if you are able to start VIM, you might just perform these
 "     at a command prompt right before you do the operation that is
 "     failing.
+" %%
