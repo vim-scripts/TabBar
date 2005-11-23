@@ -14,7 +14,7 @@
 "  Name Of File :  tabbar.vim
 "  Description  :  TabBar buffer explorer Vim Plugin
 "  Maintainer   :  Marius Groleo < groleo@gmail.com >
-"  Version      :  0.2
+"  Version      :  0.3
 
 
 " press zR in normal mode to open  all folds
@@ -45,16 +45,16 @@ if ! hasmapto('1') || !hasmapto('<M-1>')
             noremap <unique> <script> <M-9> :call <SID>Tb_SwitchTo( 9)<CR>:<BS>
             noremap <unique> <script> <M-0> :call <SID>Tb_SwitchTo( 10)<CR>:<BS>
             "INSERT mode bindings for gvim
-            inoremap <unique> <script> <M-1> <esc>:call <SID>Tb_SwitchTo( 1)<CR>:<BS>i
-            inoremap <unique> <script> <M-2> <esc>:call <SID>Tb_SwitchTo( 2)<CR>:<BS>i
-            inoremap <unique> <script> <M-3> <esc>:call <SID>Tb_SwitchTo( 3)<CR>:<BS>i
-            inoremap <unique> <script> <M-4> <esc>:call <SID>Tb_SwitchTo( 4)<CR>:<BS>i
-            inoremap <unique> <script> <M-5> <esc>:call <SID>Tb_SwitchTo( 5)<CR>:<BS>i
-            inoremap <unique> <script> <M-6> <esc>:call <SID>Tb_SwitchTo( 6)<CR>:<BS>i
-            inoremap <unique> <script> <M-7> <esc>:call <SID>Tb_SwitchTo( 7)<CR>:<BS>i
-            inoremap <unique> <script> <M-8> <esc>:call <SID>Tb_SwitchTo( 8)<CR>:<BS>i
-            inoremap <unique> <script> <M-9> <esc>:call <SID>Tb_SwitchTo( 9)<CR>:<BS>i
-            inoremap <unique> <script> <M-0> <esc>:call <SID>Tb_SwitchTo( 10)<CR>:<BS>i
+            inoremap <unique> <script> <M-1> <esc>:call <SID>Tb_SwitchTo( 1)<CR>:<BS>a
+            inoremap <unique> <script> <M-2> <esc>:call <SID>Tb_SwitchTo( 2)<CR>:<BS>a
+            inoremap <unique> <script> <M-3> <esc>:call <SID>Tb_SwitchTo( 3)<CR>:<BS>a
+            inoremap <unique> <script> <M-4> <esc>:call <SID>Tb_SwitchTo( 4)<CR>:<BS>a
+            inoremap <unique> <script> <M-5> <esc>:call <SID>Tb_SwitchTo( 5)<CR>:<BS>a
+            inoremap <unique> <script> <M-6> <esc>:call <SID>Tb_SwitchTo( 6)<CR>:<BS>a
+            inoremap <unique> <script> <M-7> <esc>:call <SID>Tb_SwitchTo( 7)<CR>:<BS>a
+            inoremap <unique> <script> <M-8> <esc>:call <SID>Tb_SwitchTo( 8)<CR>:<BS>a
+            inoremap <unique> <script> <M-9> <esc>:call <SID>Tb_SwitchTo( 9)<CR>:<BS>a
+            inoremap <unique> <script> <M-0> <esc>:call <SID>Tb_SwitchTo( 10)<CR>:<BS>a
       else
             "NORMAL mode bindings for vim( terminal)
             noremap <unique> <script> 1 :call <SID>Tb_SwitchTo( 1)<CR>:<BS>
@@ -68,18 +68,18 @@ if ! hasmapto('1') || !hasmapto('<M-1>')
             noremap <unique> <script> 9 :call <SID>Tb_SwitchTo( 9)<CR>:<BS>
             noremap <unique> <script> 0 :call <SID>Tb_SwitchTo( 10)<CR>:<BS>
             "INSERT mode bindings for vim( terminal)
-            inoremap <unique> <script> 1 <esc>:call <SID>Tb_SwitchTo( 1)<CR>:<BS>i
-            inoremap <unique> <script> 2 <esc>:call <SID>Tb_SwitchTo( 2)<CR>:<BS>i
-            inoremap <unique> <script> 3 <esc>:call <SID>Tb_SwitchTo( 3)<CR>:<BS>i
-            inoremap <unique> <script> 4 <esc>:call <SID>Tb_SwitchTo( 4)<CR>:<BS>i
-            inoremap <unique> <script> 5 <esc>:call <SID>Tb_SwitchTo( 5)<CR>:<BS>i
-            inoremap <unique> <script> 6 <esc>:call <SID>Tb_SwitchTo( 6)<CR>:<BS>i
-            inoremap <unique> <script> 7 <esc>:call <SID>Tb_SwitchTo( 7)<CR>:<BS>i
-            inoremap <unique> <script> 8 <esc>:call <SID>Tb_SwitchTo( 8)<CR>:<BS>i
-            inoremap <unique> <script> 9 <esc>:call <SID>Tb_SwitchTo( 9)<CR>:<BS>i
-            inoremap <unique> <script> 0 <esc>:call <SID>Tb_SwitchTo( 10)<CR>:<BS>i
+            inoremap <unique> <script> 1 <esc>:call <SID>Tb_SwitchTo( 1)<CR>:<BS>a
+            inoremap <unique> <script> 2 <esc>:call <SID>Tb_SwitchTo( 2)<CR>:<BS>a
+            inoremap <unique> <script> 3 <esc>:call <SID>Tb_SwitchTo( 3)<CR>:<BS>a
+            inoremap <unique> <script> 4 <esc>:call <SID>Tb_SwitchTo( 4)<CR>:<BS>a
+            inoremap <unique> <script> 5 <esc>:call <SID>Tb_SwitchTo( 5)<CR>:<BS>a
+            inoremap <unique> <script> 6 <esc>:call <SID>Tb_SwitchTo( 6)<CR>:<BS>a
+            inoremap <unique> <script> 7 <esc>:call <SID>Tb_SwitchTo( 7)<CR>:<BS>a
+            inoremap <unique> <script> 8 <esc>:call <SID>Tb_SwitchTo( 8)<CR>:<BS>a
+            inoremap <unique> <script> 9 <esc>:call <SID>Tb_SwitchTo( 9)<CR>:<BS>a
+            inoremap <unique> <script> 0 <esc>:call <SID>Tb_SwitchTo( 10)<CR>:<BS>a
       endif
-endif" %%
+endif " %%
 
 
 " Tb_ <Script> internal map ~~
@@ -160,7 +160,15 @@ endif" %%
 " above the current window?  1 = below, 0 = above.
 if !exists('g:Tb_SplitBelow')
       let g:Tb_SplitBelow = &splitbelow
-endif" %%
+endif " %%
+
+" Split to edge? ~~
+" When opening a new -Tabbar- window, split the new windows to the
+" full edge? 1 = yes, 0 = no.
+"
+if !exists('g:Tb_SplitToEdge')
+  let g:Tb_SplitToEdge = 1
+endif "%%
 
 
 " Horizontal or Vertical explorer? ~~
@@ -171,7 +179,6 @@ endif" %%
 if !exists('g:Tb_VSplit')
       let g:Tb_VSplit = 0
 endif" %%
-
 
 " TabWrap? ~~
 " By default line wrap is used (possibly breaking a tab name between two
@@ -518,8 +525,8 @@ function! <SID>FindCreateWindow(bufName, forceEdge, isExplorer)
     let l:winFound = 1
   else
 
-        "if g:Tb_SplitToEdge == 1 || a:forceEdge >= 0
-        if a:forceEdge >= 0
+        if g:Tb_SplitToEdge == 1 || a:forceEdge >= 0
+        "if a:forceEdge >= 0
 
             let l:edge = &splitbelow
             if a:forceEdge >= 0
