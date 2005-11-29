@@ -8,13 +8,13 @@
 "               warranty of any kind, either expressed or implied. In no
 "               event will the copyright holder be liable for any damamges
 "               resulting from the use of this software.
-"               Derived from  Bindu Well miniBufExplorer.vim version 6.3.2
+"               Derived from Bindu Wavell miniBufExplorer.vim version 6.3.2 http://www.vim.org/scripts/script.php?script_id=159
 
 
 "  Name Of File :  tabbar.vim
 "  Description  :  TabBar buffer explorer Vim Plugin
 "  Maintainer   :  Marius Groleo < groleo@gmail.com >
-"  Version      :  0.3
+"  Version      :  0.4
 
 
 " press zR in normal mode to open  all folds
