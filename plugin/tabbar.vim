@@ -889,7 +889,7 @@ function! <SID>Bf_DelWithD()
     if g:Tb_DBG_LVL > 0
         call <SID>DEBUG('Bf_DelWithD: l:selected_buf=['.l:selected_buf.']',5)
     endif
-    let l:selected_name = eval( "bufname(".l:selected_buf.")" )
+    let l:selected_name = bufname(l:selected_buf +0 )
     if g:Tb_DBG_LVL > 0
         call <SID>DEBUG('Bf_DelWithD: l:selBufName=['. l:selected_name.']',5)
     endif
