@@ -1,4 +1,4 @@
-"   Copyright: Copyright (C) 2005 Marius Groleo 
+"   Copyright: Copyright (C) 2005 Marius Groleo
 "              Permission is hereby granted to use and distribute this code,
 "              with or without modifications, provided that  this  copyright
 "              notice is copied with it. Like anything else that's free,
@@ -10,7 +10,7 @@
 "              Derived from  Bindu Wavell miniBufExplorer.vim version 6.3.2
 
 
-"   Version:      0.5
+"   Version:      0.7
 "   Maintainer:   Marius Groleo < groleo@gmail.com >
 "   Description:  TabBar buffer explorer Vim Plugin
 "   Name Of File: tabbar.vim
@@ -38,7 +38,7 @@ if !exists('g:Tb_DBG_LVL')
 endif" %%
 
 
-" Logging modality ~~
+" Logging method ~~
 " 0 = log to a window
 " 1 = log with vim's echo facility
 " 2 = log to a file named TabBar.DBG
@@ -55,7 +55,6 @@ endif" %%
 " TabBar Keyboard Mappings ~~
 if ! hasmapto('1') || !hasmapto('<M-1>')
       "gui bindings containing META key, are different from terminal bindings
-        noremap <unique> <script> <tt> :call <SID>Tb_Toggle()<CR>:<BS>
       if has('gui_running')
             "NORMAL mode bindings for gvim
             noremap <unique> <script> <M-1> :call <SID>Bf_SwitchTo( 1)<CR>:<BS>
@@ -80,6 +79,16 @@ if ! hasmapto('1') || !hasmapto('<M-1>')
             inoremap <unique> <script> <M-9> <esc>:call <SID>Bf_SwitchTo( 9)<CR>:<BS>a
             inoremap <unique> <script> <M-0> <esc>:call <SID>Bf_SwitchTo( 10)<CR>:<BS>a
       else
+            "NORMAL mode bindings for vim( dos32 )
+            noremap <unique> <script> ± :call <SID>Bf_SwitchTo( 1)<CR>:<BS>
+            noremap <unique> <script> ² :call <SID>Bf_SwitchTo( 2)<CR>:<BS>
+            noremap <unique> <script> ³ :call <SID>Bf_SwitchTo( 3)<CR>:<BS>
+            noremap <unique> <script> ´ :call <SID>Bf_SwitchTo( 4)<CR>:<BS>
+            noremap <unique> <script> µ :call <SID>Bf_SwitchTo( 5)<CR>:<BS>
+            noremap <unique> <script> ¶ :call <SID>Bf_SwitchTo( 6)<CR>:<BS>
+            noremap <unique> <script> · :call <SID>Bf_SwitchTo( 7)<CR>:<BS>
+            noremap <unique> <script> ¸ :call <SID>Bf_SwitchTo( 8)<CR>:<BS>
+      "else
             "NORMAL mode bindings for vim( terminal)
             noremap <unique> <script> 1 :call <SID>Bf_SwitchTo( 1)<CR>:<BS>
             noremap <unique> <script> 2 :call <SID>Bf_SwitchTo( 2)<CR>:<BS>
@@ -142,22 +151,22 @@ endif " %%
 
 " Global Configuration Variables
 " Allow auto update? ~~
-" We start out with this off for startup, but once vim is running we 
+" We start out with this off for startup, but once vim is running we
 " turn this on.
 if !exists('g:Tb_AutoUpdt')
       let g:Tb_AutoUpdt = 0
-endif" %%
+endif " %%
 
 
 " MoreThanOne? ~~
-" Display Mini Buf Explorer when there are 'More Than One' eligible buffers 
+" Display Mini Buf Explorer when there are 'More Than One' eligible buffers
 if !exists('g:Tb_MoreThanOne')
       let g:Tb_MoreThanOne = 2
 endif" %%
 
 
 " Split below/above/left/right? ~~
-" When opening a new -TabBar- window, split the new windows below or 
+" When opening a new -TabBar- window, split the new windows below or
 " above the current window?  1 = below, 0 = above.
 if !exists('g:Tb_SplitBelow')
       let g:Tb_SplitBelow = &splitbelow
@@ -166,9 +175,9 @@ endif" %%
 
 " Horizontal or Vertical explorer? ~~
 " For folks that like vertical explorers, I'm caving in and providing for
-" veritcal splits. If this is set to 0 then the current horizontal 
+" veritcal splits. If this is set to 0 then the current horizontal
 " splitting logic will be run. If however you want a vertical split,
-" assign the width (in characters) you wish to assign to the Tb_ window.
+" assign the width (in characters) you wish to assign to the -TabBar- window.
 if !exists('g:Tb_VSplit')
       let g:Tb_VSplit = 0
 endif" %%
@@ -224,7 +233,7 @@ endif "%%
 
 
 " Single/Double Click? ~~
-" flag that can be set to 1 in a users .vimrc to allow 
+" flag that can be set to 1 in a users .vimrc to allow
 " single click switching of tabs. By default we use
 " double click for tab selection.
 if !exists('g:Tb_UseSingleClick')
@@ -239,7 +248,7 @@ endif
 "
 if g:Tb_UseSingleClick == 1
     let s:clickmap = ':if bufname("%") == "-TabBar-" <bar> call <SID>Tb_Click() <bar> endif <CR>'
-    if maparg('<LEFTMOUSE>', 'n') == '' 
+    if maparg('<LEFTMOUSE>', 'n') == ''
         " no mapping for leftmouse
         exec ':nnoremap <silent> <LEFTMOUSE> <LEFTMOUSE>' . s:clickmap
     else
@@ -354,7 +363,7 @@ function! <SID>Tb_Start(sticky, delBufNum)
     " We don't want the mouse to change focus without a click
     set nomousefocus
 
-    " If folks turn numbering and columns on by default we will turn 
+    " If folks turn numbering and columns on by default we will turn
     " them off for the -TabBar- window
     setlocal foldcolumn=0
     setlocal nonumber
@@ -387,7 +396,6 @@ function! <SID>Tb_Start(sticky, delBufNum)
     nnoremap <buffer> <2-LEFTMOUSE> :call <SID>Bf_DblClkSel()<CR>:<BS>
 
 
-    " FIXME BUG If you press d in the -TabBar- then try to
     " delete the selected buffer.
     nnoremap <buffer> d :call <SID>Bf_DelWithD()<CR>:<BS>
 
@@ -453,7 +461,7 @@ function! <SID>Tb_Toggle()
 
     let l:winNum = <SID>Win_Find('-TabBar-')
 
-    if l:winNum != -1 
+    if l:winNum != -1
         call <SID>Tb_Stop(1)
     else
         call <SID>Tb_Start(1, -1)
@@ -481,12 +489,12 @@ endfunction " %%
 "     we are in a real buffer         AND
 "     we have enough eligible buffers THEN
 "     Update our explorer and get back to the current window
-" If we get a buffer number for a buffer that 
-" is being deleted, we need to make sure and 
-" remove the buffer from the list of eligible 
+" If we get a buffer number for a buffer that
+" is being deleted, we need to make sure and
+" remove the buffer from the list of eligible
 " buffers in case we are down to one eligible
 " buffer, in which case we will want to close
-" the Tb_ window.
+" the -TabBar- window.
 function! <SID>Tb_AutoUpdt(delBufNum)
     if g:Tb_DBG_LVL > 0
         call <SID>DEBUG('ENTER: Tb_AutoUpdt( delBufNum='.a:delBufNum.') : bufnr(%)='.bufnr('%').' : bufname(%)=['.bufname('%') . ']',10)
@@ -512,7 +520,7 @@ function! <SID>Tb_AutoUpdt(delBufNum)
             endif
         else
             if g:Tb_DBG_LVL > 0
-                call <SID>DEBUG('Tb_AutoUpdt: does not run for the Tb_ window', 9)
+                call <SID>DEBUG('Tb_AutoUpdt: does not run for the -TabBar- window', 9)
             endif
         endif
 
@@ -540,7 +548,7 @@ function! <SID>Tb_AutoUpdt(delBufNum)
                 let l:bufnr = <SID>Win_Find('-TabBar-')
                 if (l:bufnr == -1)
                         if g:Tb_DBG_LVL > 0
-                            call <SID>DEBUG('Tb_AutoUpdt: About to call Tb_Start (Create Tb_)', 9)
+                            call <SID>DEBUG('Tb_AutoUpdt: About to call Tb_Start (Create -TabBar-)', 9)
                         endif
                         call <SID>Tb_Start(0, a:delBufNum)
                 else
@@ -548,7 +556,7 @@ function! <SID>Tb_AutoUpdt(delBufNum)
                     let l:ListChanged = <SID>Bf_BuildList(a:delBufNum, 0)
                     if (l:ListChanged)
                         if g:Tb_DBG_LVL > 0
-                            call <SID>DEBUG('Tb_AutoUpdt: About to call Tb_Start (Update Tb_)', 9) 
+                            call <SID>DEBUG('Tb_AutoUpdt: About to call Tb_Start (Update -TabBar-)', 9)
                         endif
                         call <SID>Tb_Start(0, a:delBufNum)
                     endif
@@ -611,13 +619,13 @@ endfunction " %%
 " Window operations "
 "-------------------"
 " Win_Find - Return the window number of a named buffer ~~
-" If none is found then returns -1. 
+" If none is found then returns -1.
 function! <SID>Win_Find(bufName)
     "if g:Tb_DBG_LVL > 0
     "    call <SID>DEBUG('ENTER: Win_Find()',10)
     "endif
 
-    " Try to find an existing window that contains 
+    " Try to find an existing window that contains
     " our buffer.
     let l:bufNr = bufnr(a:bufName)
     if l:bufNr != -1
@@ -634,11 +642,11 @@ endfunction " %%
 
 " Win_FindOrCreate - Attempts to find a window for a named buffer. ~~
 "
-" If it is found then moves there. Otherwise creates a new window and 
+" If it is found then moves there. Otherwise creates a new window and
 " configures it and moves there.
 "
 " forceEdge, -1 use defaults, 0 below, 1 above
-" isExplorer, 0 no, 1 yes 
+" isExplorer, 0 no, 1 yes
 " 0 no, 1 yes
 function! <SID>Win_FindOrCreate(bufName, forceEdge, isExplorer)
   "if g:Tb_DBG_LVL > 0
@@ -654,7 +662,7 @@ function! <SID>Win_FindOrCreate(bufName, forceEdge, isExplorer)
   " Try to find an existing explorer window
   let l:winNum = <SID>Win_Find(a:bufName)
 
-  " If found goto the existing window, otherwise 
+  " If found goto the existing window, otherwise
   " split open a new window.
   if l:winNum != -1
 "    if g:Tb_DBG_LVL > 0
@@ -741,9 +749,9 @@ function! <SID>Win_FindOrCreate(bufName, forceEdge, isExplorer)
 endfunction " %%
 
 
-" Win_Resize - Set width/height of Tb_ window ~~
-" 
-" Makes sure we are in our explorer, then sets the height/width for our explorer 
+" Win_Resize - Set width/height of -TabBar- window ~~
+"
+" Makes sure we are in our explorer, then sets the height/width for our explorer
 " window so that we can fit all of our information without taking extra lines.
 function! <SID>Win_Resize()
     if g:Tb_DBG_LVL > 0
@@ -800,11 +808,11 @@ function! <SID>Win_Resize()
     exec('resize '.l:height)
 
   " Vertical Resize
-  else 
+  else
 
     if g:Tb_MaxSize != 0
       let l:newWidth = s:maxTabWidth
-      if l:newWidth > g:Tb_MaxSize 
+      if l:newWidth > g:Tb_MaxSize
           let l:newWidth = g:Tb_MaxSize
       endif
       if l:newWidth < g:Tb_MinSize
@@ -830,7 +838,7 @@ endfunction " %%
 "-------------------"
 " Buffer operations "
 "-------------------"
-" Bf_Choosed - From the Tb_ window, return the bufnum for buf under cursor ~~
+" Bf_Choosed - From the -TabBar- window, return the bufnum for buf under cursor ~~
 " If we are in our explorer window then return the buffer number
 " for the buffer under the cursor.
 function! <SID>Bf_Choosed()
@@ -866,10 +874,10 @@ function! <SID>Bf_Choosed()
 endfunction " %%
 
 
-" Bf_DelWithD - From the Tb_ window, delete selected buffer from list ~~
-" After making sure that we are in our explorer, This will delete the buffer 
+" Bf_DelWithD - From the -TabBar- window, delete selected buffer from list ~~
+" After making sure that we are in our explorer, This will delete the buffer
 " under the cursor. If the buffer under the cursor is being displayed in a
-" window, this routine will attempt to get different buffers into the 
+" window, this routine will attempt to get different buffers into the
 " windows that will be affected so that windows don't get removed.
 function! <SID>Bf_DelWithD()
     if g:Tb_DBG_LVL > 0
@@ -881,11 +889,11 @@ function! <SID>Bf_DelWithD()
         if g:Tb_DBG_LVL > 0
             call <SID>DEBUG('EXIT : Bf_DelWithD not called in -TabBar-',1)
         endif
-        return 
+        return
     endif
 
     let l:selected_buf  =  <SID>Bf_Choosed()
-    let l:selected_buf  =  <SID>Map_Get( l:selected_buf )
+    let l:selected_buf  =  <SID>Map_Get_key( l:selected_buf )
     if g:Tb_DBG_LVL > 0
         call <SID>DEBUG('Bf_DelWithD: l:selected_buf=['.l:selected_buf.']',5)
     endif
@@ -907,10 +915,10 @@ function! <SID>Bf_DelWithD()
     let l:save_rep = &report
     let l:save_sc  = &showcmd
     let &report    = 10000
-    set noshowcmd 
-  
-  
-    if l:selected_buf != -1 && l:selected_name != "" 
+    set noshowcmd
+
+
+    if l:selected_buf != -1 && l:selected_name != ""
 
         " Don't want auto updates while we are processing a delete
         " request.
@@ -928,12 +936,12 @@ function! <SID>Bf_DelWithD()
             call <SID>DEBUG('Bf_DelWithD: l:selected_name=<'.l:selected_name.'>: l:selected_buf=['.l:selected_buf.']',5)
         endif
 
-        " If buffer is being displayed in a window then 
-        " move window to a different buffer before 
-        " deleting this one. 
+        " If buffer is being displayed in a window then
+        " move window to a different buffer before
+        " deleting this one.
         let l:winNum = (bufwinnr(l:selected_name) + 0)
         " while we have windows that contain our buffer
-        while l:winNum != -1 
+        while l:winNum != -1
             if g:Tb_DBG_LVL > 0
                 call <SID>DEBUG('Bf_DelWithD: l:selected_buf='.l:selected_buf.' is being displayed in window: l:winNum='.l:winNum,5)
             endif
@@ -954,7 +962,7 @@ function! <SID>Bf_DelWithD()
             endif
 
             if l:origBuf == l:curBuf
-                " we wrapped so we are going to have to delete a buffer 
+                " we wrapped so we are going to have to delete a buffer
                 " that is in an open window.
                 let l:winNum = -1
             else
@@ -969,7 +977,7 @@ function! <SID>Bf_DelWithD()
         endif
         exec l:prevWin.' wincmd w'
 
-        " Try to get back to the -TabBar- window 
+        " Try to get back to the -TabBar- window
         let l:winNum = bufwinnr(bufnr('-TabBar-'))
         if l:winNum != -1
             exec l:winNum.' wincmd w'
@@ -981,16 +989,16 @@ function! <SID>Bf_DelWithD()
                 call <SID>DEBUG('Bf_DelWithD: Unable to get to -TabBar- window',1)
             endif
         endif
-  
+
         " Delete the buffer selected.
         if g:Tb_DBG_LVL > 0
             call <SID>DEBUG('Bf_DelWithD: About to delete buffer: '.l:selected_buf,5)
         endif
         " [displayed_buffer]-- [real_buffer] list
-        "let l:vimBuf = <SID>Map_Get( l:selected_buf )
+        "let l:vimBuf = <SID>Map_Get_key( l:selected_buf )
         exec('silent! bd '.l:selected_buf )
 
-        let g:Tb_AutoUpdt = l:saveTb_AutoUpdt 
+        let g:Tb_AutoUpdt = l:saveTb_AutoUpdt
         if g:Tb_DBG_LVL > 0
             call <SID>DEBUG('Bf_DelWithD: current window=: '.bufname('%'),5)
         endif
@@ -1007,9 +1015,9 @@ function! <SID>Bf_DelWithD()
 endfunction " %%
 
 
-" Bf_SafePrint - Wrapper for getting Tb_ window shown ~~
+" Bf_SafePrint - Wrapper for getting -TabBar- window shown ~~
 "
-" Makes sure we are in our explorer, then erases the current buffer and turns 
+" Makes sure we are in our explorer, then erases the current buffer and turns
 " it into a mini buffer explorer window.
 function! <SID>Bf_SafePrint(delBufNum)
     if g:Tb_DBG_LVL > 0
@@ -1039,9 +1047,9 @@ function! <SID>Bf_SafePrint(delBufNum)
 endfunction " %%
 
 
-" Bf_PrintList - Clear current buffer and put the Tb_ text into it ~~
-" Makes sure we are in our explorer, then adds a list of all modifiable 
-" buffers to the current buffer. Special marks are added for buffers that 
+" Bf_PrintList - Clear current buffer and put the -TabBar- text into it ~~
+" Makes sure we are in our explorer, then adds a list of all modifiable
+" buffers to the current buffer. Special marks are added for buffers that
 " are in one or more windows (*) and buffers that have been modified (+)
 function! <SID>Bf_PrintList(delBufNum)
     if g:Tb_DBG_LVL > 0
@@ -1054,19 +1062,18 @@ function! <SID>Bf_PrintList(delBufNum)
         let l:save_rep = &report
         let l:save_sc = &showcmd
         let &report = 10000
-        set noshowcmd 
+        set noshowcmd
 
         " Delete all lines in buffer.
         1,$d _
-  
-        " Goto the end of the buffer put the buffer list 
+
+        " Goto the end of the buffer put the buffer list
         " and then delete the extra trailing blank line
         $
         put! =g:Tb_VimBufList
         $ d _
-
         let g:Tb_ForceDisplay = 0
-    
+
         let &report  = l:save_rep
         let &showcmd = l:save_sc
     else
@@ -1080,7 +1087,7 @@ function! <SID>Bf_PrintList(delBufNum)
 endfunction " %%
 
 
-" Bf_BuildList - Build the text for the Tb_ window ~~
+" Bf_BuildList - Build the text for the -TabBar- window ~~
 " Creates the buffer list string and returns 1 if it is different than
 " last time this was called and 0 otherwise.
 function! <SID>Bf_BuildList(delBufNum, updateBufList)
@@ -1100,7 +1107,7 @@ function! <SID>Bf_BuildList(delBufNum, updateBufList)
             let l:i = l:i + 1
 
         " If we have a delBufNum and it is the current
-        " buffer then ignore the current buffer. 
+        " buffer then ignore the current buffer.
         " Otherwise, continue.
         if (a:delBufNum == -1 || l:i != a:delBufNum)
             " Make sure the buffer in question is listed.
@@ -1110,7 +1117,7 @@ function! <SID>Bf_BuildList(delBufNum, updateBufList)
                 " Check to see if the buffer is a blank or not. If the buffer does have
                 " a name, process it.
                 if(strlen(l:BufName))
-                    " Only show modifiable buffers (The idea is that we don't 
+                    " Only show modifiable buffers (The idea is that we don't
                     " want to show Explorers)
                     if (getbufvar(l:i, '&modifiable') == 1 && BufName != '-TabBar-')
                         " Get filename & Remove []'s & ()'s
@@ -1124,7 +1131,7 @@ function! <SID>Bf_BuildList(delBufNum, updateBufList)
                         if bufwinnr(l:i) != -1
                             let l:tab = "[".l:y.':'.l:shortBufName."]*"
                         endif
-        
+
                         " If the buffer is modified then mark it
                         if(getbufvar(l:i, '&modified') == 1)
                             let l:tab = l:tab . '+'
@@ -1164,8 +1171,8 @@ function! <SID>Bf_BuildList(delBufNum, updateBufList)
 endfunction " %%
 
 
-" Bf_Eligible - Are there enough Tb_ eligible buffers to open the Tb_ window? ~~
-" Returns 1 if there are any buffers that can be displayed in a 
+" Bf_Eligible - Are there enough -TabBar- eligible buffers to open the -TabBar- window? ~~
+" Returns 1 if there are any buffers that can be displayed in a
 " mini buffer explorer. Otherwise returns 0. If delBufNum is
 " any non -1 value then don't include that buffer in the list
 " of eligible buffers.
@@ -1177,8 +1184,8 @@ function! <SID>Bf_Eligible(delBufNum)
   let l:save_rep = &report
   let l:save_sc = &showcmd
   let &report = 10000
-  set noshowcmd 
-  
+  set noshowcmd
+
   let l:NBuffers = bufnr('$')     " Get the number of the last buffer.
   let l:i        = 0              " Set the buffer index to zero.
   let l:found    = 0              " No buffer found
@@ -1193,9 +1200,9 @@ function! <SID>Bf_Eligible(delBufNum)
   " Loop through every buffer less than the total number of buffers.
   while(l:i <= l:NBuffers && l:found < l:needed)
     let l:i = l:i + 1
-   
+
     " If we have a delBufNum and it is the current
-    " buffer then ignore the current buffer. 
+    " buffer then ignore the current buffer.
     " Otherwise, continue.
     if (a:delBufNum == -1 || l:i != a:delBufNum)
       " Make sure the buffer in question is listed.
@@ -1205,12 +1212,12 @@ function! <SID>Bf_Eligible(delBufNum)
         " Check to see if the buffer is a blank or not. If the buffer does have
         " a name, process it.
         if (strlen(l:BufName))
-          " Only show modifiable buffers (The idea is that we don't 
+          " Only show modifiable buffers (The idea is that we don't
           " want to show Explorers)
           if ((getbufvar(l:i, '&modifiable') == 1) && (BufName != '-TabBar-'))
-            
+
               let l:found = l:found + 1
-  
+
           endif
         endif
       endif
@@ -1230,12 +1237,12 @@ endfunction " %%
 " Bf_SwitchTo      Switch to bufNum( parameter) buffer~~
 function! <SID>Bf_SwitchTo( bufNum)
 
-    let l:vimbuf = <SID>Map_Get( a:bufNum )
+    let l:vimbuf = <SID>Map_Get_key( a:bufNum )
     exec "b!" . l:vimbuf
 endfunction " %%
 
 
-" Bf_CrSel - From the Tb_ window, open buffer under the cursor ~~
+" Bf_CrSel - From the -TabBar- window, open buffer under the cursor ~~
 " If we are in our explorer, then we attempt to open the buffer under the
 " cursor in the previous window.
 function! <SID>Bf_CrSel()
@@ -1316,10 +1323,10 @@ endfunction " %%
 
 
 " Bf_Cycle - Cycle Through Buffers ~~
-" Move to next or previous buffer in the current window. If there 
+" Move to next or previous buffer in the current window. If there
 " are no more modifiable buffers then stay on the current buffer.
 " can be called with no parameters in which case the buffers are
-" cycled forward. Otherwise a single argument is accepted, if 
+" cycled forward. Otherwise a single argument is accepted, if
 " it's 0 then the buffers are cycled backwards, otherwise they
 " are cycled forward.
 function! <SID>Bf_Cycle(forward)
@@ -1331,7 +1338,7 @@ function! <SID>Bf_Cycle(forward)
         resize
         let g:Tb_AutoUpdt = 0
     endif
-  
+
     " Change buffer (keeping track of before and after buffers)
     let l:origBuf = bufnr('%')
     if (a:forward == 1)
@@ -1343,7 +1350,7 @@ function! <SID>Bf_Cycle(forward)
 
     " Skip any non-modifiable buffers, but don't cycle forever
     " This should stop us from stopping in any of the [Explorers]
-    " FIXME
+    " FIXME: infite loop
     while getbufvar(l:curBuf, '&modifiable') == 0 && l:origBuf != l:curBuf
         if (a:forward == 1)
             bn!
@@ -1359,13 +1366,24 @@ function! <SID>Bf_Cycle(forward)
     endif
 endfunction " %%
 
-
-function! <SID>Map_Get( idx )
+" the format for a map is something like:
+" idx-key\r
+" idx: the number displayed in tabbar [idx:fooBar.txt]
+" key: the buffer number in which idx is hold
+function! <SID>Map_Get_key( idx )
     let l:i=matchstr( g:Tb_BufferMap, a:idx . "-[0-9]*\r" )
     let l:x=substitute (l:i , a:idx ."-", "","")
     let l:x=substitute (l:x , "\r", "","")
     return l:x
 endfunction
+
+function! <SID>Map_Get_idx( key )
+    let l:i=matchstr( g:Tb_BufferMap, "[0-9]*-" , a:key."\r" )
+    let l:x=substitute (l:i , "-".a:key, "","")
+    let l:x=substitute (l:x , "\r", "","")
+    return l:x
+endfunction
+
 
 " I know this is short, But it keeps the code clean
 function! <SID>Map_Clear()
@@ -1374,8 +1392,8 @@ endfunction
 
 
 " DEBUG - Display debug output when debugging is turned on ~~
-" Thanks to Charles E. Campbell, Jr. PhD <cec@NgrOyphSon.gPsfAc.nMasa.gov> 
-" for Decho.vim which was the inspiration for this enhanced debugging 
+" Thanks to Charles E. Campbell, Jr. PhD <cec@NgrOyphSon.gPsfAc.nMasa.gov>
+" for Decho.vim which was the inspiration for this enhanced debugging
 " capability.
 function! <SID>DEBUG(msg, level)
 
@@ -1447,7 +1465,7 @@ endfunc " %%
 "     :TbStart .......... Open and/or goto Explorer
 "     :TbStop  .......... Close the Explorer if it's open
 "     :TbAup   .......... Update Explorer without navigating
-"     :TbToggle ......... Toggle Tabbar 
+"     :TbToggle ......... Toggle Tabbar
 "``````````````````````````````````````````````````````````````````
 "
 "
@@ -1465,9 +1483,9 @@ endfunc " %%
 "     You can set the max height by setting this in .vimrc:
 "
 "           let g:Tb_MaxSize = <max lines: default 0>
-"     
+"
 "     Setting this to 0 will mean the window gets as big as
-"     needed to fit all your buffers. 
+"     needed to fit all your buffers.
 "
 "   o  NOTE
 "   You can set the min height by
@@ -1478,11 +1496,11 @@ endfunc " %%
 "   o  IN VERTICAL MODE
 "   By default the vertical explorer has a fixed width. If you put:
 "
-"       let g:Tb_MaxSize = <max width: default 0> 
+"       let g:Tb_MaxSize = <max width: default 0>
 "
 "   into your .vimrc then tabbar will attempt to set the width of the
 "   tabbar window to be as wide as your widest tab. The width will not
-"   exceed Tb_MaxSize even if you have wider tabs. 
+"   exceed Tb_MaxSize even if you have wider tabs.
 "
 "   Accepting the default value of 0 for this will give you a fixed
 "   width tabbar window.
@@ -1496,7 +1514,7 @@ endfunc " %%
 "````````````````````````````````````````````````````````````````
 "
 "
-"   --  This stops the -TabBar- from opening 
+"   --  This stops the -TabBar- from opening
 "   automatically until more than one eligible buffer is available.
 "   You can turn this feature off by setting the following variable
 "   in your .vimrc:
@@ -1505,28 +1523,28 @@ endfunc " %%
 "   window to be loaded as soon as an eligible buffer is read. You
 "   can also set it to larger numbers. So if you set it to 4 for
 "   example the TabBar window wouldn't auto-open until 4 eligibles
-"   buffers had been loaded. This is nice for folks that don't 
+"   buffers had been loaded. This is nice for folks that don't
 "   want an TabBar window unless they are editing more than two or
 "   three buffers.
-"       
+"
 "       let g:Tb_MoreThanOne=1
 "``````````````````````````````````````````````````````````````````
 "
 "
-"   --  To enable the optional mapping of Control + Vim Direction Keys 
-"   [hjkl] to window movement commands, you can put the following into 
+"   --  To enable the optional mapping of Control + Vim Direction Keys
+"   [hjkl] to window movement commands, you can put the following into
 "   your .vimrc:
 "
 "       let g:Tb_MapWindowNavVim = 1
 "
-"   To enable the optional mapping of Control + Arrow Keys to window 
+"   To enable the optional mapping of Control + Arrow Keys to window
 "   movement commands, you can put the following into your .vimrc:
 "
 "       let g:Tb_MapWindowNavArrows = 1
 "``````````````````````````````````````````````````````````````````
 "
 "
-"   --  To enable the optional mapping of <C-TAB> and <C-S-TAB> to a 
+"   --  To enable the optional mapping of <C-TAB> and <C-S-TAB> to a
 "   function that will bring up the next or previous buffer in the
 "   current window, you can put the following into your .vimrc:
 "
@@ -1542,20 +1560,20 @@ endfunc " %%
 "
 "
 "   o  NOTE
-"   If you set TabSwitchBufs AND ...TabSwitchWindows, 
+"   If you set TabSwitchBufs AND ...TabSwitchWindows,
 "           TabSwitchBufs will *BE* enabled and
 "           TabSwitchWindows will be *NOT*.
 "``````````````````````````````````````````````````````````````````
-"     
+"
 "
 "   --  If you would like to single click on tabs rather than double
-"   clicking on them to goto the selected buffer. 
+"   clicking on them to goto the selected buffer.
 "
 "       let g:Tb_UseSingleClick = 1
 "````````````````````````````````````````````````````````````````
 "
 "
-"   --  It is possible to customize the the highlighting for the tabs in 
+"   --  It is possible to customize the the highlighting for the tabs in
 "   the TabBar by configuring the following highlighting groups:
 "
 "      Tb_Normal .............  for buffers that have NOT CHANGED and
@@ -1584,10 +1602,10 @@ endfunc " %%
 "
 "       let g:Tb_ModSelTarget = 1
 "
-"   into your .vimrc in order to force TabBar to try to place selected 
+"   into your .vimrc in order to force TabBar to try to place selected
 "   buffers into a window that does not have a nonmodifiable buffer.
 "   The upshot of this should be that if you go into TabBar and select
-"   a buffer, the buffer should not show up in a window that is 
+"   a buffer, the buffer should not show up in a window that is
 "   hosting an explorer.
 "
 "       let g:Tb_ForceSyntaxEnable = 1
@@ -1614,7 +1632,15 @@ endfunc " %%
 "````````````````````````````````````````````````````````````````
 " %%
 
-" TODO: 1.  Indent code
-"       2.  Optimize code
-"       3.  Better Document
+" BUGFIX:
+" 0.7. Removed mapping to <tt>, to avoid delayed response to <<
+" 0.6. Fixed the "delete with d" bug.
+
+" TODO: 0.  When the tabbar is full, try to scroll it
+"       1.  See what is goind on with the error "Not enough space"
+"       2.  Indent code
+"       3.  Optimize code
+"       4.  Better Document
+"       5.  noremap in vimrc to <C-TAB> to update the buffer list
+"       6.  noremap in vimrc to <?> to switch to -TabBar-
 "vim:foldmethod=marker vim:foldmarker=~~,%%
