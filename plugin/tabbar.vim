@@ -143,7 +143,7 @@ endif
 if !exists(':Tbbn')
       command! Tbbn call <SID>Bf_Cycle(1)
 endif
-if !exists(':Tbp')
+if !exists(':Tbbp')
       command! Tbbp call <SID>Bf_Cycle(0)
 endif " %%
 
