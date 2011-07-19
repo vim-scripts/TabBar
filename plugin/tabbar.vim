@@ -368,6 +368,9 @@ function! <SID>Tb_Start(sticky, delBufNum)
     setlocal foldcolumn=0
     setlocal nonumber
 
+    " Keeps the TabBar window size when resizing the whole application
+    set winfixheight
+
     if has("syntax")
         syn clear
         syn match Tb_Normal             '\[[^\]]*\]'
